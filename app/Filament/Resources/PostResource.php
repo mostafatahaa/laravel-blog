@@ -19,37 +19,50 @@ class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    # change icon form heroicons.com
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+    # this will add cateogry section in navbar under parent section called Content
+    protected static ?string $navigationGroup = 'Content';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(2048)
+                # this Grid for make a beautiful layout of the form
+                Forms\Components\Grid::make(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('title')
+                            ->required()
+                            ->maxLength(2048)
 
-                    # generate slug from title
-                    ->live()
-                    ->afterStateUpdated(function (Set $set, $state) {
-                        $set('slug', Str::slug($state));
-                    }),
+                            # generate slug from title
+                            ->live()
+                            ->afterStateUpdated(function (Set $set, $state) {
+                                $set('slug', Str::slug($state));
+                            }),
 
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(2048),
-                Forms\Components\TextInput::make('thumbnail')
-                    ->maxLength(2048),
-                Forms\Components\Textarea::make('body')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\Toggle::make('active')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('published_at')
-                    ->required(),
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
+                        Forms\Components\TextInput::make('slug')
+                            ->required()
+                            ->maxLength(2048),
+                    ]),
+
+                # this Grid for make a beautiful layout of the form
+                Forms\Components\Grid::make(1)
+                    ->schema([
+                        Forms\Components\TextInput::make('thumbnail')
+                            ->maxLength(2048),
+                        Forms\Components\Textarea::make('body')
+                            ->required()
+                            ->columnSpanFull(),
+                        Forms\Components\Toggle::make('active')
+                            ->required(),
+                        Forms\Components\DateTimePicker::make('published_at')
+                            ->required(),
+                        Forms\Components\Select::make('user_id')
+                            ->relationship('user', 'name')
+                            ->required(),
+                    ]),
             ]);
     }
 
