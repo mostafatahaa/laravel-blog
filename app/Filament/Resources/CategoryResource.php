@@ -20,7 +20,11 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
+    # change icon form heroicons.com
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    # this will add cateogry section in navbar under parent section called Content
+    protected static ?string $navigationGroup = 'Content';
 
     public static function form(Form $form): Form
     {
